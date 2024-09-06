@@ -105,7 +105,7 @@ def job_analysis_page():
         if not recognised:
             st.error("Job title not recognised. Please search for a recognised job title like one of the jobs listed below.")
             
-            # Display trending jobs as suggestions
+            #show trending jobs as suggestions
             st.write("### Trending Jobs to Analyse in 2024")
             trending_jobs = df_2024['Job Title'].value_counts().head(5)
             trending_jobs_with_categories = []
@@ -115,7 +115,7 @@ def job_analysis_page():
                 trending_jobs_with_categories.append((job_title, listings, category))
             for job_title, listings, category in trending_jobs_with_categories:
                 st.write(f"- **{job_title}**: {listings} listings ({category})")
-            return  # Exit the function early since the job title wasn't found
+            return 
 
         job_counts = get_jobsby_title(job_title_input, dfs, years)
         fig, ax = plt.subplots(figsize=(10, 6))
@@ -146,10 +146,10 @@ def job_analysis_page():
 
         all_skills = [skill for skills_list in filtered_jobs['Skills Required'] for skill in skills_list]
         skill_counts = Counter(all_skills)
-        most_common_skills = skill_counts.most_common(3)  # finds top 3 skills
+        most_common_skills = skill_counts.most_common(3)  #finds top 3 skills
         top_skills_str = ", ".join([skill for skill, _ in most_common_skills])
 
-        # Recommendation messages based on 4 change groups
+        #recommendations based on 4 change groups
         if total_increase <= -5:
             recommendation = (
                 f"The role of **{job_title_input}** saw a large decrease of {abs(total_increase)} listings from 2019 to 2024. This data suggests a decreasing demand in the sector, with it looking like the trend will continue downwards for job openings.\n "
@@ -183,12 +183,12 @@ def job_analysis_page():
             max_salary = filtered_jobs['Salary'].max()
             all_locations = filtered_jobs['Location'].value_counts()
 
-            # Job title analysis
+            #job title analysis part
             st.write(f"### {job_title_input} Job Analysis in 2024")
             st.write(f"**Most in Demand Skills for this Role**: " + ", ".join([f"{skill}: {count / len(filtered_jobs) * 100:.2f}%" for skill, count in most_common_skills]))
             st.write(f"**Average Salary**: £{average_salary:,.2f} (Range: £{min_salary:,.2f} - £{max_salary:,.2f})")
 
-            # Salary graph
+            #salary chart
             salary_fig, salary_ax = plt.subplots(figsize=(10, 6))
             salary_ax.hist(filtered_jobs['Salary'], bins=10, color='green', alpha=0.7)
             salary_ax.set_title('Salary Distribution for ' + job_title_input)
@@ -197,7 +197,7 @@ def job_analysis_page():
             salary_ax.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
             st.pyplot(salary_fig)
 
-            # Location graph
+            #location chart
             location_fig, location_ax = plt.subplots(figsize=(10, 6))
             all_locations.plot(kind='bar', ax=location_ax, color='orange', alpha=0.7)
             location_ax.set_title(f'Location Distribution for {job_title_input}')
@@ -210,7 +210,7 @@ def job_analysis_page():
         else:
             st.write("No jobs found for the entered job title.")
 
-    else:  # only trending jobs if no input
+    else:  #only show trending jobs if no input
         st.write("### Trending Jobs to Search for in 2024")
         trending_jobs = df_2024['Job Title'].value_counts().head(5)
         trending_jobs_with_categories = []
@@ -400,8 +400,8 @@ def data_search_page():
         
         filtered_counts.append(len(temp_df))
 
-    # Plotting the filtered counts
-    fig, ax = plt.subplots(figsize=(10, 6))  # Plot for all filters
+    #plotting the filtered counts
+    fig, ax = plt.subplots(figsize=(10, 6))  #plot for all of filters
     ax.plot(years, filtered_counts, marker='o', linestyle='-', color='blue')
     ax.set_ylabel('Number of Job Listings')
     ax.set_xlabel('Year')
