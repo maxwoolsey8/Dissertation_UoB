@@ -11,7 +11,7 @@
 # filtering as well
 # add skills to reccomendation
 # top change in that category
-# however the top 3 skills are
+
 
 
 
